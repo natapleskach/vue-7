@@ -1,105 +1,45 @@
-const Counter = {
-  data () {
-    return {
-      counter: 0,
-      text: "Это провочный текст",
-    }
-  }
+const TodoItemNew = {
+  props: ["Todo"],
+  template: `<li>{{ todo }}</li>`
 }
 
-Vue.createApp(Counter).mount("#counter")
-
-
-const NewText = {
-  data () {
-    return {
-      message: "Я хочу изучать Реакт, а не Вью"
-    }
-  },
-  methods: {
-    reverse() {
-      this.message = this.message
-      .split("")
-      .reverse()
-      .join("")
-    }
-  }
-}
-
-Vue.createApp(NewText).mount('#event-reverse');
-
-const Conditional = {
+const watchExample = Vue.createApp({
 	data() {
 		return {
-			isSeen: false,
+			watchInput: '',
+			groceryList: [
+				'Vegetables',
+				'Cheese' ,
+				'Whatever else humans are supposed to eat'
+			]
 		}
 	},
-}
-
-Vue.createApp(Conditional).mount('#conditional');
-
-
-const list = {
-  data() {
-    return {
-      todos: [
-        {text: "Выучить"},
-        {text: "Сделать дз"},
-        {text: "Продолжить изучать"}
-      ]
-    }
-  }
-}
-
-Vue.createApp(list).mount('#list')
-
-
-const warchExample = Vue.createApp({
-  data() {
-    return {
-      question: "",
-      answer: "Вопросы обычно заканчиваются вопросительным знаком."
-    }
-  },
-  watch: {
-    question(newQuestion) {
-      if (newQuestion.indexof("?") > -1) {
-        this.getAnswer()
-      }
-    }
+	watch: {
+    watchInput(inputValue) {
+      if (inputValue.indexOf(".") > -1) {
+        this.addTodo(inputValue)
+      }   
+     }
   },
   methods: {
     getAnswer() {
-      this.answer = "Думаю"
-      axios
-				.get('https://jsonplaceholder.typicode.com/todos/1')
-				.then(response => (this.answer = response.data.answer))
-				.catch(error => {
-					this.answer = 'Ошибка! Нет доступа к API. ' + error
-				})
-    }
-  }
-}).mount('#example')
+      axios 
+      .get("https://jsonplaceholder.typicode.com/todos/4")
+      .then(response => console.log(response.data))
+      .catch(error => error)
+    },
+    addTodo(value) {
+      this.groceryList.push(value)
+    },
 
-
-const TodoItemNew = {
-  props: ["Todo"],
-  template: `<li>{{ todo.text }}</li>`
-}
-
-const TodoList = {
-  data() {
-    return {
-      groceryList: [
-        { id: 0, text: "Vegetables" },
-        { id: 1, text: "Cheese" },
-        { id: 2, text: "Whatever else humans to eat" }
-      ]
+    deleteItem() {
+      this.groceryList.splice(this.groceryList.length - 1 , 1);
+    },
+    sortList() {
+      this.groceryList.sort();
     }
   },
   components: {
-    TodoItemNew
+    TodoItemNewTest
   }
-}
-
-Vue.createApp(TodoList).mount('#todo-list-app')
+}).mount("#example")
