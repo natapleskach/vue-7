@@ -1,5 +1,5 @@
-const TodoItemNew = {
-  props: ["Todo"],
+const TodoItemNewTest = {
+  props: ["todo"],
   template: `<li>{{ todo }}</li>`
 }
 
@@ -16,9 +16,7 @@ const watchExample = Vue.createApp({
 	},
 	watch: {
     watchInput(inputValue) {
-      if (inputValue.indexOf(".") > -1) {
-        this.addTodo(inputValue)
-      }   
+      this.watchInput=inputValue;
      }
   },
   methods: {
@@ -28,8 +26,8 @@ const watchExample = Vue.createApp({
       .then(response => console.log(response.data))
       .catch(error => error)
     },
-    addTodo(value) {
-      this.groceryList.push(value)
+    addTodo() {
+      this.groceryList.push(this.watchInput)
     },
 
     deleteItem() {
